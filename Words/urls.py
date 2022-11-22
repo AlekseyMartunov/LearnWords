@@ -1,8 +1,8 @@
-from django.urls import path
-from .views import HomePage, WordDetail, AddWords, as_viewss
+from django.urls import path, include
+from . import views
 
 urlpatterns = [
-    path('', HomePage.as_view(), name='home_page'),
-    path('<slug:slug>/', WordDetail.as_view(), name='detail_page'),
-    path('add_words/', AddWords.as_view(), name='add_words'),
+    path('', views.HomePage.as_view(), name='home'),
+    path('word/<slug:slug>/', views.WordDetail.as_view(), name='detail_view'),
+    path('add_words/', views.AddWords.as_view(), name='add_words'),
 ]

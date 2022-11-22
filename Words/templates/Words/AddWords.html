@@ -1,8 +1,22 @@
 {% extends "Words/base.html" %}
 
+{% load static %}
 
 {% block content %}
 
-<p>new test to add words </p>
+    <form action="{% url 'add_words' %}" method="post" id="form">
+        {% csrf_token %}
+        <div>
+            <label for="eng">Слово на русском</label>
+            <input name="name_rus" id="rus">
+        </div>
+        <div>
+            <label for="eng">Слово на английском</label>
+            <input name="name_eng" id="eng">
+        </div>
+        <button type="button" id="button">Добавить</button>
+    </form>
+
+    <script src="{% static 'Words/js/SendWords.js' %}"></script
 
 {% endblock %}

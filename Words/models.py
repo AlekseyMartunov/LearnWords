@@ -1,5 +1,5 @@
+from django.template.defaultfilters import slugify
 from django.db import models
-from django.contrib.auth.models import User
 from django.urls import reverse
 
 
@@ -11,14 +11,19 @@ class Words(models.Model):
     correct = models.PositiveBigIntegerField("Количество правильных ответов", default=0)
     created = models.DateTimeField("Дата создания", auto_now_add=True)
     last_repeat = models.DateTimeField(auto_now=True)
-    slug = models.SlugField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    slug = models.SlugField(null=False, unique=True)
+    user_ip = models.CharField(max_length=15, null=False)
 
     def get_absolute_url(self):
-        return reverse("detail_page", kwargs={"slug": self.slug})
+        return reverse("detail_view", kwargs={"slug": self.slug})
 
     def __str__(self):
         return f"{self.name_rus}: {self.name_eng}"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name_eng)
+        return super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Слово"
