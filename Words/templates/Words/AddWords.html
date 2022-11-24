@@ -1,7 +1,5 @@
-{% extends "Words/base.html" %}
-
+{% extends "Words/base.html"%}
 {% load static %}
-
 {% block content %}
 
     <form action="{% url 'add_words' %}" method="post" id="form">
@@ -17,6 +15,6 @@
         <button type="button" id="button">Добавить</button>
     </form>
 
-    <script src="{% static 'Words/js/SendWords.js' %}"></script
+    <script src="{% static 'Words/js/SendWords.js' %}"></script>
 
 {% endblock %}

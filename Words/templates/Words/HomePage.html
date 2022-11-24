@@ -1,7 +1,7 @@
 {% extends "Words/base.html"%}
 
 {% block content %}
-<a href="{% url 'add_words' %}">Добавить слово</a>
+
 
 {% if words %}
     <ul>
@@ -12,7 +12,7 @@
         {% endfor %}
     </ul>
 {% else %}
-<p>В вашем словаре пока еще нет слов</p>
+    <p>В вашем словаре пока еще нет слов</p>
 {% endif %}
 
 
