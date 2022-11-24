@@ -1,7 +1,39 @@
+* {
+   background-color: #13141C;
+   color: #F2F2F2;
+   font-size: 21px; 
+}
+
+li {
+    list-style-type: none; 
+}
+
+a { 
+    text-decoration: none; 
+}
+
+.menu > li {
+	display: inline;
+}
+
 .success {
 	color:  green;
 }
 
 .error {
 	color:  red;
+}
+
+.element_answer{
+	width: 150px;
+	height: 50px;
+	border:solid 1px;
+	border-radius: 10px ;
+	text-align: center;
+	vertical-align: center;
+	margin: 10px;
+}
+
+.element_answer:hover {
+  background-color: #0098E5;
 }

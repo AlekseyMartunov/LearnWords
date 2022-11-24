@@ -4,10 +4,10 @@
 
 
 {% if words %}
-    <ul>
+    <ul class="menu">
         {% for word in words%}
         <li>
-            {{ word.name_rus }} <span> - </span>{{ word.name_eng }} <a href="{{ word.get_absolute_url }}"> Смотреть подробнее </a>
+             <a href="{{ word.get_absolute_url }}"> {{ word.name_rus }} <span> - </span>{{ word.name_eng }} </a>
         </li>
         {% endfor %}
     </ul>

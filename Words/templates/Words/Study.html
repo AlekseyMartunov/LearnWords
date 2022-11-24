@@ -1,0 +1,26 @@
+{% extends "Words/base.html"%}
+{% load static %}
+{% block content %}
+
+
+<h1>Study</h1>
+{% csrf_token %}
+
+<input type="radio" id="language1" name="language" value="eng">
+<label for="language1">Английский</label><br>
+<input type="radio" id="language2" name="language" value="rus">
+<label for="language2">Русский</label><br>
+
+<p><button type="button" id="button">Начать</button></p>
+
+<div id="question_menu">
+  <div id="question_text"></div>
+
+</div>
+
+
+
+<script src="{% static 'Words/js/Study.js' %}"></script>
+
+
+{% endblock %}
