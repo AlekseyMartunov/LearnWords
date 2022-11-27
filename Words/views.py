@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.views.generic import ListView, DetailView, TemplateView
 import json
 
@@ -14,10 +15,14 @@ class HomePage(DataMixin, ListView):
     template_name = "Words/HomePage.html"
     context_object_name = "words"
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get(self, request, *args, **kwargs):
+        """Переопределение функции get для получения слов, отфильтрованных по ip"""
+        ip = self.get_client_ip(request)
+        words = Words.objects.filter(user_ip=ip)
         user_context = self.get_user_context(Title="Главная")
-        return {**context, **user_context}
+        user_context["selected"] = 1
+        user_context["words"] = words
+        return render(request, self.template_name, context=user_context)
 
 
 class WordDetail(DataMixin, DetailView):
@@ -33,16 +38,6 @@ class WordDetail(DataMixin, DetailView):
         return {**context, **user_context}
 
 
-class Statistics(DataMixin, TemplateView):
-    """Класс для отображения статистики"""
-    template_name = "Words/Statistics.html"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user_context = self.get_user_context(Title="Статистика")
-        return {**context, **user_context}
-
-
 class AddWords(DataMixin, TemplateView):
     """Класс для записи новых слов в базу"""
     template_name = "Words/AddWords.html"
@@ -50,15 +45,8 @@ class AddWords(DataMixin, TemplateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         user_context = self.get_user_context(Title="Добавить запись")
+        user_context["selected"] = 2
         return {**context, **user_context}
-
-    def get_client_ip(self, request):
-        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ip = x_forwarded_for.split(',')[0]
-        else:
-            ip = request.META.get('REMOTE_ADDR')
-        return ip
 
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))
@@ -75,18 +63,14 @@ class Study(DataMixin, TemplateView):
     """Класс для рендеринга вопросов"""
     template_name = "Words/Study.html"
 
-    def get_client_ip(self, request):
-        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ip = x_forwarded_for.split(',')[0]
-        else:
-            ip = request.META.get('REMOTE_ADDR')
-        return ip
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get(self, request, *args, **kwargs):
+        """Переопределение функции get для получения слов, отфильтрованных по ip"""
+        ip = self.get_client_ip(request)
+        words = Words.objects.filter(user_ip=ip)
         user_context = self.get_user_context(Title="Учеба")
-        return {**context, **user_context}
+        user_context["selected"] = 3
+        user_context["words"] = words
+        return render(request, self.template_name, context=user_context)
 
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))

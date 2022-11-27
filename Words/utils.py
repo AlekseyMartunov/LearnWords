@@ -1,10 +1,10 @@
 from random import choice, shuffle
 
 
-menu = ({"name": "Домашняя страница", "url": "home"},
-        {"name": "Добавить слова", "url": "add_words"},
-        {"name": "Статистика", "url": "statistics"},
-        {"name": "Учеба", "url": "study"},)
+menu = ({"name": "Домашняя страница", "url": "home", "select": 1},
+        {"name": "Добавить слова", "url": "add_words", "select": 2},
+        {"name": "Учеба", "url": "study", "select": 3},
+        )
 
 
 class DataMixin:
@@ -14,6 +14,14 @@ class DataMixin:
         context = kwargs
         context["menu"] = menu
         return context
+
+    def get_client_ip(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
 
 
 class QuestionMaker:
@@ -31,6 +39,9 @@ class QuestionMaker:
         """ возвращает list словарей типа {'pk':1, 'question': 'кот',
         'answers': ('dog', 'cat', 'red', 'black'), correct: 1} """
         quiz = []
+        if len(self.__words) < 5:
+            return quiz
+
         for word in self.__words:
             dict_element = {}
             dict_element["pk"] = word.pk

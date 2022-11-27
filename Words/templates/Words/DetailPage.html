@@ -1,16 +1,15 @@
 {% extends "Words/base.html" %}
+{% load words_tags %}
 
 
 {% block content %}
-<p>{{ word.name_rus }}</p>
-<p>{{ word.name_eng }}</p>
-
-
-
-
-
-
-
+<div class="word_info">
+    <p>Пара слов: {{ word.name_rus }} - {{ word.name_eng }}</p><br>
+    <p>Дата добавления пары: {{ word.created|date:"d F Y" }}</p><br>
+    <p>C момента добавления прошло: {% time_difference %}</p><br>
+    <p>Количество ошибок: {{ word.errors }}</p><br>
+    <p>Количество правильных ответов: {{ word.correct }}</p><br>
+</div>
 
 
 {% endblock %}

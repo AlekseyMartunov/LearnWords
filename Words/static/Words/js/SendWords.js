@@ -26,7 +26,7 @@ function renderAnswer(status){
 		let form_element = document.getElementById('form');
 		let div = document.createElement('div');
 		div.className = 'success';
-		div.innerHTML = 'слова успешно добавлены в ваш словарь';
+		div.innerHTML = 'Cлова успешно добавлены в ваш словарь';
 		form_element.append(div);
 
 		setTimeout(removeElement, 2000);
@@ -39,7 +39,7 @@ function renderAnswer(status){
 		let form_element = document.getElementById('form');
 		let div = document.createElement('div');
 		div.className = 'error';
-		div.innerHTML = 'Что то пошло не так...';
+		div.innerHTML = 'Возникла ошибка при добавлении слов в словарь';
 		form_element.append(div);
 
 		setTimeout(removeElement, 2000);
