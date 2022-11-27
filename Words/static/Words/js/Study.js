@@ -59,7 +59,9 @@ function get_result(){
 	}
 	current_index += 1;
 	if (global_queryset[current_index] == undefined){
+			setTimeout(()=>{
 			renderEnd();
+			}, 150);
 		}
 	else{
 			setTimeout(()=>{
