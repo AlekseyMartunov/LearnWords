@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView, TemplateView
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, DetailView, TemplateView, View
+from django.db.models import F
 import json
 
 from .models import Words
@@ -28,7 +29,7 @@ class HomePage(DataMixin, ListView):
 class WordDetail(DataMixin, DetailView):
     """Класс для отображения детальной информации о слове"""
     model = Words
-    slug_field = "slug"
+    slug_field = "pk"
     template_name = "Words/DetailPage.html"
     context_object_name = "word"
 
@@ -36,6 +37,10 @@ class WordDetail(DataMixin, DetailView):
         context = super().get_context_data(**kwargs)
         user_context = self.get_user_context(Title="О слове...")
         return {**context, **user_context}
+
+    def post(self, request, pk):
+        Words.objects.get(pk=pk).delete()
+        return redirect('/', permanent=True)
 
 
 class AddWords(DataMixin, TemplateView):
@@ -78,9 +83,9 @@ class Study(DataMixin, TemplateView):
             for key, value in data["results"].items():
                 word = Words.objects.get(pk=int(key))
                 if value:
-                    word.correct += 1
+                    word.correct = F("correct") + 1
                 else:
-                    word.errors += 1
+                    word.errors = F("errors") + 1
                 word.save()
             return HttpResponse(status=200)
 

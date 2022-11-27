@@ -147,4 +147,6 @@ button:hover {
 	margin: 50px;
 }
 
-
+.button_remove:hover{
+	color:  red;
+}

@@ -29,6 +29,10 @@ function renderAnswer(status){
 		div.innerHTML = 'Cлова успешно добавлены в ваш словарь';
 		form_element.append(div);
 
+		document.getElementById('rus').value = '';
+		document.getElementById('eng').value = '';
+
+
 		setTimeout(removeElement, 2000);
 		function removeElement() {
 			div.remove();
@@ -41,6 +45,7 @@ function renderAnswer(status){
 		div.className = 'error';
 		div.innerHTML = 'Возникла ошибка при добавлении слов в словарь';
 		form_element.append(div);
+
 
 		setTimeout(removeElement, 2000);
 		function removeElement() {

@@ -1,4 +1,5 @@
 {% extends "Words/base.html" %}
+{% load static %}
 {% load words_tags %}
 
 
@@ -9,7 +10,16 @@
     <p>C момента добавления прошло: {% time_difference %}</p><br>
     <p>Количество ошибок: {{ word.errors }}</p><br>
     <p>Количество правильных ответов: {{ word.correct }}</p><br>
+
+    <form action="{% url 'detail_view' word.pk %}" method="post">
+     {% csrf_token %}
+    <input type="hidden" id="pk" value="{{ word.pk }}">
+    <button type="submit" class="button_remove" id="button">Удалить пару</button>
+    </form>
+
 </div>
+
+<script src="{% static 'Words/js/remove.js' %}"></script>
 
 
 {% endblock %}
