@@ -16,14 +16,16 @@ class HomePage(DataMixin, ListView):
     template_name = "Words/HomePage.html"
     context_object_name = "words"
 
-    def get(self, request, *args, **kwargs):
-        """Переопределение функции get для получения слов, отфильтрованных по ip"""
-        ip = self.get_client_ip(request)
-        words = Words.objects.filter(user_ip=ip)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
         user_context = self.get_user_context(Title="Главная")
         user_context["selected"] = 1
-        user_context["words"] = words
-        return render(request, self.template_name, context=user_context)
+        return {**context, **user_context}
+
+    def get_queryset(self):
+        ip = self.get_client_ip(self.request)
+        words = Words.objects.filter(user_ip=ip)
+        return words
 
 
 class WordDetail(DataMixin, DetailView):
@@ -68,14 +70,10 @@ class Study(DataMixin, TemplateView):
     """Класс для рендеринга вопросов"""
     template_name = "Words/Study.html"
 
-    def get(self, request, *args, **kwargs):
-        """Переопределение функции get для получения слов, отфильтрованных по ip"""
-        ip = self.get_client_ip(request)
+    def get_queryset(self):
+        ip = self.get_client_ip(self.request)
         words = Words.objects.filter(user_ip=ip)
-        user_context = self.get_user_context(Title="Учеба")
-        user_context["selected"] = 3
-        user_context["words"] = words
-        return render(request, self.template_name, context=user_context)
+        return words
 
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))
