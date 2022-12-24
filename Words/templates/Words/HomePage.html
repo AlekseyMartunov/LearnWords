@@ -7,7 +7,7 @@
     <div class="words_list">
         <p>Пар всего: {{ words|length }}</p>
         <ul>
-            {% for word in words%}
+            {% for word in words %}
             <li>
                  <a href="{{ word.get_absolute_url }}"> {{ word.name_rus }} <span> - </span>{{ word.name_eng }} </a>
             </li>

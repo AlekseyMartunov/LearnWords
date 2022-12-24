@@ -2,27 +2,25 @@
 {% load static %}
 {% block content %}
 
+  {% csrf_token %}
+  {% if words|length > 4 %}
+      <div class="question_page">
+      <div class="set_language">
+        <p>Какой перевод вы хотите учить?</p>
+        <input type="radio" id="language1" name="language" value="eng">
+        <label for="language1">С английского на русский</label><br>
+        <input type="radio" id="language2" name="language" value="rus">
+        <label for="language2">С русского на английский</label><br>
+        <p><button type="button" id="button">Начать</button></p>
+      </div>
 
-
-{% csrf_token %}
-{% if words|length > 4 %}
-  <div class="question_page">
-  <div class="set_language">
-    <p>Какой перевод вы хотите учить?</p>
-    <input type="radio" id="language1" name="language" value="eng">
-    <label for="language1">С английского на русский</label><br>
-    <input type="radio" id="language2" name="language" value="rus">
-    <label for="language2">С русского на английский</label><br>
-    <p><button type="button" id="button">Начать</button></p>
-  </div>
-
-  <div id="question_menu">
-      <div id="question_text"></div>
-  </div>
-</div>
-<script src="{% static 'Words/js/Study.js' %}"></script>
-{% else %}
-<div class="question_page"> В вашем словаре пока слишком мало слов (нужно хотя-бы 5), добавьте еще!</div>
-{% endif %}
+      <div id="question_menu">
+          <div id="question_text"></div>
+      </div>
+    </div>
+    <script src="{% static 'Words/js/Study.js' %}"></script>
+  {% else %}
+    <div class="question_page"> В вашем словаре пока слишком мало слов (у вас есть: {{ words|length }}, а нужно хотя-бы 5), добавьте еще!</div>
+  {% endif %}
 
 {% endblock %}

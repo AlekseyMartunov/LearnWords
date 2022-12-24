@@ -1,4 +1,5 @@
 from random import choice, shuffle
+from .models import Words
 
 
 menu = ({"name": "Домашняя страница", "url": "home", "select": 1},
@@ -22,6 +23,11 @@ class DataMixin:
         else:
             ip = request.META.get('REMOTE_ADDR')
         return ip
+
+    def get_queryset(self):
+        ip = self.get_client_ip(self.request)
+        words = Words.objects.filter(user_ip=ip)
+        return words
 
 
 class QuestionMaker:

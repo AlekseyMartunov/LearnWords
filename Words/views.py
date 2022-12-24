@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, TemplateView, View
+from django.shortcuts import redirect
+from django.views.generic import ListView, DetailView, TemplateView
 from django.db.models import F
 import json
 
@@ -21,11 +21,6 @@ class HomePage(DataMixin, ListView):
         user_context = self.get_user_context(Title="Главная")
         user_context["selected"] = 1
         return {**context, **user_context}
-
-    def get_queryset(self):
-        ip = self.get_client_ip(self.request)
-        words = Words.objects.filter(user_ip=ip)
-        return words
 
 
 class WordDetail(DataMixin, DetailView):
@@ -66,14 +61,17 @@ class AddWords(DataMixin, TemplateView):
             return HttpResponse(status=400)
 
 
-class Study(DataMixin, TemplateView):
+class Study(DataMixin, ListView):
     """Класс для рендеринга вопросов"""
+    model = Words
     template_name = "Words/Study.html"
+    context_object_name = "words"
 
-    def get_queryset(self):
-        ip = self.get_client_ip(self.request)
-        words = Words.objects.filter(user_ip=ip)
-        return words
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_context = self.get_user_context(Title="Учеба")
+        user_context["selected"] = 3
+        return {**context, **user_context}
 
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))
